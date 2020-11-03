@@ -12,14 +12,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [ChangeNotifierProvider(create: (context) => AppModel())],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Smart POS',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: MainScreen(),
-        ));
+      providers: [ChangeNotifierProvider(create: (context) => AppModel())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Smart POS',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => MainScreen(),
+        },
+      ),
+    );
   }
 }

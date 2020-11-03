@@ -128,46 +128,51 @@ class _FoodBodyState extends State<FoodBody> {
                   (index) {
                     return MouseHoverBuilder(
                       isClickable: true,
-                      builder: (context, hovering) => StyledContainer(
-                        Colors.white,
-                        shadows: [
-                          BoxShadow(
-                            offset: Offset(0, 2.8),
-                            blurRadius: 2.2,
-                            color: Color.fromRGBO(0, 0, 0, 0.034),
-                          ),
-                          BoxShadow(
-                            offset: Offset(0, 6.7),
-                            blurRadius: 5.3,
-                            color: Color.fromRGBO(0, 0, 0, 0.048),
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(15.0),
-                        border: hovering
-                            ? Border.all(color: Color(0xffFFCA40), width: 2)
-                            : null,
-                        child: ClipRRect(
+                      builder: (context, hovering) => GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                            context, '/food&Drinks/Category'),
+                        child: StyledContainer(
+                          Colors.white,
+                          shadows: [
+                            BoxShadow(
+                              offset: Offset(0, 2.8),
+                              blurRadius: 2.2,
+                              color: Color.fromRGBO(0, 0, 0, 0.034),
+                            ),
+                            BoxShadow(
+                              offset: Offset(0, 6.7),
+                              blurRadius: 5.3,
+                              color: Color.fromRGBO(0, 0, 0, 0.048),
+                            ),
+                          ],
                           borderRadius: BorderRadius.circular(15.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                    color: Color(0xffFFCA40).withOpacity(0.5)),
-                                flex: 2,
-                              ),
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Food $index',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                          border: hovering
+                              ? Border.all(color: Color(0xffFFCA40), width: 2)
+                              : null,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                      color:
+                                          Color(0xffFFCA40).withOpacity(0.5)),
+                                  flex: 2,
                                 ),
-                              )
-                            ],
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      'Food $index',
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

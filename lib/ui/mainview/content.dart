@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_pos/core/enums/page_type.dart';
 import 'package:smart_pos/core/provider/app/app_model.dart';
 import 'package:smart_pos/core/utils/utils.dart';
+import 'package:smart_pos/ui/contentscreens/food_drinks/food_drinks_router.dart';
 import 'package:smart_pos/ui/contentscreens/index.dart';
 import 'package:smart_pos/ui/widgets/fading_indexstack.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class MainContent extends StatelessWidget {
           index: pages.indexOf(pageType),
           children: [
             DashboardView(),
-            FoodAndDrinksView(),
+            FoodDrinksBase(),
             MessagesView(),
             BillsView(),
             SettingsView(),
