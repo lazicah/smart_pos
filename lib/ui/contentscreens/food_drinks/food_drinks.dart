@@ -114,6 +114,7 @@ class _FoodBodyState extends State<FoodBody> {
             ),
             VSpace(20),
             GridView(
+              padding: const EdgeInsets.only(bottom: 30),
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -124,7 +125,7 @@ class _FoodBodyState extends State<FoodBody> {
               ),
               children: [
                 ...List.generate(
-                  20,
+                  50,
                   (index) {
                     return MouseHoverBuilder(
                       isClickable: true,

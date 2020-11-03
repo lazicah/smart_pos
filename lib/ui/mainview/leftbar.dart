@@ -70,99 +70,184 @@ class _LeftNavBarState extends State<LeftNavBar> {
           child: Material(
             color: Color(0xffFFFFFF),
             child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Stack(
                 children: [
-                  Container(
-                    height: _headerHeight,
-                    child: AppLogo(),
-                  ),
-                  NotificationListener<MainMenuOffsetNotification>(
-                    // Listen for [MainMenuOffsetNotification], dispatched from each [MainMenuBtn] that is assigned a pageType.
-                    // We use these to position the animated indicator in [_updateIndicatorState]
-                    onNotification: (n) {
-                      _menuBtnOffsetsByType[n.pageType] = n.offset;
-                      return true; // Return true so the notification stops here
-                    },
-                    child: ListTileTheme(
-                      selectedColor: Colors.white,
-                      dense: true,
-                      child: Stack(
-                        children: [
-                          /// Animated line that moves up and down to select the current page
-                          _AnimatedMenuIndicator(_indicatorY ?? 50.0,
-                              height: _indicatorHeight),
-                          Column(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: _headerHeight,
+                        child: AppLogo(),
+                      ),
+                      NotificationListener<MainMenuOffsetNotification>(
+                        // Listen for [MainMenuOffsetNotification], dispatched from each [MainMenuBtn] that is assigned a pageType.
+                        // We use these to position the animated indicator in [_updateIndicatorState]
+                        onNotification: (n) {
+                          _menuBtnOffsetsByType[n.pageType] = n.offset;
+                          return true; // Return true so the notification stops here
+                        },
+                        child: ListTileTheme(
+                          selectedColor: Colors.white,
+                          dense: true,
+                          child: Stack(
                             children: [
-                              SizedBox(
-                                height: 50.0,
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.Dashboard,
-                                icon: Icons.dashboard,
-                                title: 'Dashboard',
-                                selected: currentPage == PageType.Dashboard,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.Dashboard),
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.FoodDrinks,
-                                icon: Icons.emoji_food_beverage,
-                                title: 'Food & Drinks',
-                                selected: currentPage == PageType.FoodDrinks,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.FoodDrinks),
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.Messages,
-                                icon: Icons.chat_bubble,
-                                title: 'Messages',
-                                selected: currentPage == PageType.Messages,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.Messages),
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.Bills,
-                                icon: Icons.money,
-                                title: 'Bills',
-                                selected: currentPage == PageType.Bills,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.Bills),
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.Settings,
-                                icon: Icons.settings_applications,
-                                title: 'Settings',
-                                selected: currentPage == PageType.Settings,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.Settings),
-                              ),
-                              VSpace(10),
-                              ListTile(
-                                title: Text('Other'),
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.Notifications,
-                                icon: Icons.notifications,
-                                title: 'Notifications',
-                                selected: currentPage == PageType.Notifications,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.Notifications),
-                              ),
-                              MainMenuTile(
-                                pageType: PageType.Support,
-                                icon: Icons.support_agent,
-                                title: 'Support',
-                                selected: currentPage == PageType.Support,
-                                onTap: () =>
-                                    _handlePageSelected(PageType.Support),
+                              /// Animated line that moves up and down to select the current page
+                              _AnimatedMenuIndicator(_indicatorY ?? 50.0,
+                                  height: _indicatorHeight),
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 50.0,
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.Dashboard,
+                                    icon: Icons.dashboard,
+                                    title: 'Dashboard',
+                                    selected: currentPage == PageType.Dashboard,
+                                    onTap: () =>
+                                        _handlePageSelected(PageType.Dashboard),
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.FoodDrinks,
+                                    icon: Icons.emoji_food_beverage,
+                                    title: 'Food & Drinks',
+                                    selected:
+                                        currentPage == PageType.FoodDrinks,
+                                    onTap: () => _handlePageSelected(
+                                        PageType.FoodDrinks),
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.Messages,
+                                    icon: Icons.chat_bubble,
+                                    title: 'Messages',
+                                    selected: currentPage == PageType.Messages,
+                                    onTap: () =>
+                                        _handlePageSelected(PageType.Messages),
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.Bills,
+                                    icon: Icons.money,
+                                    title: 'Bills',
+                                    selected: currentPage == PageType.Bills,
+                                    onTap: () =>
+                                        _handlePageSelected(PageType.Bills),
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.Settings,
+                                    icon: Icons.settings_applications,
+                                    title: 'Settings',
+                                    selected: currentPage == PageType.Settings,
+                                    onTap: () =>
+                                        _handlePageSelected(PageType.Settings),
+                                  ),
+                                  VSpace(10),
+                                  ListTile(
+                                    title: Text('Other'),
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.Notifications,
+                                    icon: Icons.notifications,
+                                    title: 'Notifications',
+                                    selected:
+                                        currentPage == PageType.Notifications,
+                                    onTap: () => _handlePageSelected(
+                                        PageType.Notifications),
+                                  ),
+                                  MainMenuTile(
+                                    pageType: PageType.Support,
+                                    icon: Icons.support_agent,
+                                    title: 'Support',
+                                    selected: currentPage == PageType.Support,
+                                    onTap: () =>
+                                        _handlePageSelected(PageType.Support),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        '@ 2020 SmartPOS App',
+                        style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),
                     ),
                   ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: AlignmentDirectional.topCenter,
+                      children: [
+                        StyledContainer(
+                          Colors.white,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Theresa Web',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              VSpace(5),
+                              Text(
+                                'Waiter 4h 5min',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Container(
+                                height: 40,
+                                width: double.infinity,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 10.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: FlatButton(
+                                    color: Colors.grey.shade200,
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Open Profile',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          margin: const EdgeInsets.only(
+                              left: 30, right: 30, bottom: 30),
+                          height: 150,
+                          width: double.infinity,
+                          shadows: [
+                            BoxShadow(
+                              offset: Offset(0, 2.8),
+                              blurRadius: 2.2,
+                              color: Color.fromRGBO(0, 0, 0, 0.034),
+                            ),
+                            BoxShadow(
+                              offset: Offset(0, 20),
+                              blurRadius: 30,
+                              color: Color.fromRGBO(0, 0, 0, 0.048),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        Positioned(top: -20, child: CircleAvatar())
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
