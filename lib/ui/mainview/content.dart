@@ -15,19 +15,17 @@ class MainContent extends StatelessWidget {
   Widget build(BuildContext context) {
     var pages =
         context.select<AppModel, List<PageType>>((value) => value.pages);
-    return Container(
-        height: MediaQuery.of(context).size.height,
-        child: FadingIndexedStack(
-          index: pages.indexOf(pageType),
-          children: [
-            DashboardView(),
-            FoodDrinksBase(),
-            MessagesView(),
-            BillsView(),
-            SettingsView(),
-            NotificationsView(),
-            SupportView(),
-          ],
-        ));
+    return FadingIndexedStack(
+      index: pages.indexOf(pageType),
+      children: [
+        DashboardView(),
+        FoodAndDrinksView(),
+        MessagesView(),
+        BillsView(),
+        SettingsView(),
+        NotificationsView(),
+        SupportView(),
+      ],
+    );
   }
 }
