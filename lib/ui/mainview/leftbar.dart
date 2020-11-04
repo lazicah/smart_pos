@@ -4,6 +4,7 @@ import 'package:smart_pos/core/provider/app/app_model.dart';
 import 'package:smart_pos/ui/utils/styles.dart';
 import 'package:smart_pos/ui/widgets/app_logo.dart';
 import 'package:smart_pos/ui/widgets/main_menu_tile.dart';
+import 'package:smart_pos/ui/widgets/scroll_view.dart';
 import 'package:smart_pos/ui/widgets/styled_container.dart';
 import 'package:provider/provider.dart';
 
@@ -37,11 +38,20 @@ class _LeftNavBarState extends State<LeftNavBar> {
 
   @override
   void initState() {
-    //PageType p = PageType.Dashboard;
-    Future.delayed(Duration(microseconds: 100)).then((value) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _updateIndicatorState(context.read<AppModel>().page);
     });
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    Future.delayed(Duration(milliseconds: 300)).then((value) {
+      _updateIndicatorState(context.read<AppModel>().page);
+    });
+
+    super.didChangeDependencies();
   }
 
   void _handlePageSelected(PageType pageType) =>
@@ -70,7 +80,7 @@ class _LeftNavBarState extends State<LeftNavBar> {
           child: Material(
             color: Color(0xffFFFFFF),
             child: Container(
-              child: Stack(
+              child: Column(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,85 +179,136 @@ class _LeftNavBarState extends State<LeftNavBar> {
                       ),
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        '@ 2020 SmartPOS App',
-                        style: TextStyle(fontSize: 10, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: AlignmentDirectional.topCenter,
-                      children: [
-                        StyledContainer(
-                          Colors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Theresa Web',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  Flexible(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 50.0),
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        print(constraints.biggest.height);
+                        if (constraints.biggest.height < 149.0) {
+                          return StyledContainer(
+                            Colors.white,
+                            height: 70,
+                            margin: const EdgeInsets.only(
+                                left: 30, right: 30, bottom: 30),
+                            width: double.infinity,
+                            borderRadius: BorderRadius.circular(15.0),
+                            shadows: [
+                              BoxShadow(
+                                offset: Offset(0, 2.8),
+                                blurRadius: 2.2,
+                                color: Color.fromRGBO(0, 0, 0, 0.034),
                               ),
-                              VSpace(5),
-                              Text(
-                                'Waiter 4h 5min',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                ),
+                              BoxShadow(
+                                offset: Offset(0, 20),
+                                blurRadius: 30,
+                                color: Color.fromRGBO(0, 0, 0, 0.048),
                               ),
-                              Container(
-                                height: 40,
-                                width: double.infinity,
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 10.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  child: FlatButton(
-                                    color: Colors.grey.shade200,
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Open Profile',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
+                            ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(),
+                                  HSpace(10),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'Theresa Web',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
+                                      VSpace(5),
+                                      Text(
+                                        'Waiter 4h 5min',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          alignment: AlignmentDirectional.topCenter,
+                          children: [
+                            StyledContainer(
+                              Colors.white,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'Theresa Web',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  VSpace(5),
+                                  Text(
+                                    'Waiter 4h 5min',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    width: double.infinity,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 10.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      child: FlatButton(
+                                        color: Colors.grey.shade200,
+                                        onPressed: () {},
+                                        child: Text(
+                                          'Open Profile',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              margin: const EdgeInsets.only(
+                                  left: 30, right: 30, bottom: 30),
+                              height: 150,
+                              width: double.infinity,
+                              shadows: [
+                                BoxShadow(
+                                  offset: Offset(0, 2.8),
+                                  blurRadius: 2.2,
+                                  color: Color.fromRGBO(0, 0, 0, 0.034),
                                 ),
-                              )
-                            ],
-                          ),
-                          margin: const EdgeInsets.only(
-                              left: 30, right: 30, bottom: 30),
-                          height: 150,
-                          width: double.infinity,
-                          shadows: [
-                            BoxShadow(
-                              offset: Offset(0, 2.8),
-                              blurRadius: 2.2,
-                              color: Color.fromRGBO(0, 0, 0, 0.034),
+                                BoxShadow(
+                                  offset: Offset(0, 20),
+                                  blurRadius: 30,
+                                  color: Color.fromRGBO(0, 0, 0, 0.048),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(15.0),
                             ),
-                            BoxShadow(
-                              offset: Offset(0, 20),
-                              blurRadius: 30,
-                              color: Color.fromRGBO(0, 0, 0, 0.048),
-                            ),
+                            Positioned(top: -20, child: CircleAvatar())
                           ],
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        Positioned(top: -20, child: CircleAvatar())
-                      ],
+                        );
+                      }),
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      '@ 2020 SmartPOS App',
+                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                    ),
+                  ),
                 ],
               ),
             ),

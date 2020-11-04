@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:smart_pos/ui/utils/styles.dart';
 
+import 'package:smart_pos/ui/widgets/animated_panel.dart';
+
 import 'mouse_hover.dart';
 
 class StyledScrollbar extends StatefulWidget {

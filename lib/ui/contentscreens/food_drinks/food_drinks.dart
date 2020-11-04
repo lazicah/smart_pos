@@ -1,9 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_pos/core/models/recipe_data.dart';
 import 'package:smart_pos/ui/contentscreens/food_drinks/food_drinks_vm.dart';
 import 'package:smart_pos/ui/utils/build_utils.dart';
 import 'package:smart_pos/ui/utils/styles.dart';
+import 'package:smart_pos/ui/widgets/animated_panel.dart';
 import 'package:smart_pos/ui/widgets/app_logo.dart';
 import 'package:smart_pos/ui/widgets/constrained_flexview.dart';
 import 'package:smart_pos/ui/widgets/mouse_hover.dart';
@@ -20,21 +22,22 @@ class FoodAndDrinksView extends StatelessWidget {
       onModelReady: (model) async => await model.loadData(),
       builder: (context, model, _) => Scaffold(
         backgroundColor: Color(0xffFFFFFF),
-        body: Column(
+        body: Row(
           children: [
-            FoodHeader(),
             Expanded(
-                child: Row(
-              children: [
-                Expanded(child: FoodBody()),
-                model.showRightPanel
-                    ? RightPanel(
-                        data: model.selected,
-                        model: model,
-                      )
-                    : SizedBox.shrink()
-              ],
-            )),
+              child: Column(
+                children: [
+                  FoodHeader(),
+                  Expanded(child: FoodBody()),
+                ],
+              ),
+            ),
+            model.selected != null
+                ? RightPanel(
+                    data: model.selected,
+                    model: model,
+                  )
+                : SizedBox.shrink()
           ],
         ),
       ),
@@ -61,48 +64,64 @@ class RightPanel extends StatelessWidget {
           handleColor: Color(0xffFFCA40).withAlpha(255),
           child: Stack(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 300,
-                    color: Color(0xffFFCA40).withOpacity(0.5),
-                    child: Image.network(
-                      data.thumbnailUrl ??
-                          'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                      fit: BoxFit.fill,
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 500),
+                transitionBuilder: (child, animation) {
+                  return FadeScaleTransition(
+                    animation: animation,
+                    child: child,
+                  );
+                },
+                child: Column(
+                  key: UniqueKey(),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 300,
+                      color: Color(0xffFFCA40).withOpacity(0.5),
+                      child: Image.network(
+                        data?.thumbnailUrl ??
+                            'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data.name,
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold),
-                        ),
-                        VSpace(5),
-                        Text(
-                          data.description ?? '',
-                          style: TextStyle(
-                            fontSize: 16.0,
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.name,
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
+                          VSpace(5),
+                          Text(
+                            data.description ?? '',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              IconButton(
-                icon: Icon(Icons.close_rounded, color: Colors.white),
-                onPressed: () => model.showRightPanel = false,
+              Container(
+                color: Colors.black,
+                child: IconButton(
+                  icon: Icon(Icons.close_rounded, color: Colors.white),
+                  onPressed: () => model.showRightPanel = false,
+                ),
               )
             ],
           ),
         ),
       ),
+    ).animatedPanelX(
+      closeX: 400,
+      isClosed: !model.showRightPanel,
     );
   }
 }
@@ -111,7 +130,7 @@ class FoodHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40.0),
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20.0),
       child: Row(
         children: [
           Spacer(),
@@ -185,8 +204,8 @@ class _FoodBodyState extends State<FoodBody> {
                     itemCount: model.recipes.length,
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 300,
-                      childAspectRatio: 350 / 500,
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 200 / 300,
                       crossAxisSpacing: 30,
                       mainAxisSpacing: 30,
                     ),
@@ -271,11 +290,14 @@ class RecipeCard extends StatelessWidget {
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
                         VSpace(5),
-                        Text(
-                          data.description ?? '',
-                          maxLines: 2,
-                          style: TextStyle(
-                            fontSize: 16.0,
+                        Flexible(
+                          child: Text(
+                            data.description ?? '',
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 12.0,
+                            ),
                           ),
                         ),
                       ],
