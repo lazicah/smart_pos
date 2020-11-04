@@ -48,7 +48,7 @@ class _LeftNavBarState extends State<LeftNavBar> {
   @override
   void didChangeDependencies() {
     Future.delayed(Duration(milliseconds: 300)).then((value) {
-      _updateIndicatorState(context.read<AppModel>().page);
+      if (mounted) _updateIndicatorState(context.read<AppModel>().page);
     });
 
     super.didChangeDependencies();
@@ -183,7 +183,6 @@ class _LeftNavBarState extends State<LeftNavBar> {
                     child: Container(
                       margin: const EdgeInsets.only(top: 50.0),
                       child: LayoutBuilder(builder: (context, constraints) {
-                        print(constraints.biggest.height);
                         if (constraints.biggest.height < 149.0) {
                           return StyledContainer(
                             Colors.white,

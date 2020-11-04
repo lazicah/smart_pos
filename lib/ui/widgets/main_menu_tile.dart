@@ -29,7 +29,6 @@ class _MainMenuTileState extends State<MainMenuTile> {
     if (widget.pageType != null) {
       Future.delayed(Duration(milliseconds: 100), () {
         Offset o = BuildUtils.getOffsetFromContext(context);
-
         MainMenuOffsetNotification(widget.pageType, o).dispatch(context);
       });
     }

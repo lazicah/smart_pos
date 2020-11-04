@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_pos/core/models/recipe_data.dart';
 import 'package:smart_pos/ui/contentscreens/food_drinks/food_drinks_vm.dart';
 import 'package:smart_pos/ui/utils/build_utils.dart';
+import 'package:smart_pos/ui/utils/screen_utils.dart';
 import 'package:smart_pos/ui/utils/styles.dart';
 import 'package:smart_pos/ui/widgets/animated_panel.dart';
 import 'package:smart_pos/ui/widgets/app_logo.dart';
@@ -17,6 +18,8 @@ import 'package:stacked/stacked.dart';
 class FoodAndDrinksView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool useSingleColumn =
+        MediaQuery.of(context).size.width < PageBreaks.LargePhone;
     return ViewModelBuilder<FoodDrinksVm>.reactive(
       viewModelBuilder: () => FoodDrinksVm(),
       onModelReady: (model) async => await model.loadData(),
@@ -24,20 +27,20 @@ class FoodAndDrinksView extends StatelessWidget {
         backgroundColor: Color(0xffFFFFFF),
         body: Row(
           children: [
-            Expanded(
-              child: Column(
-                children: [
-                  FoodHeader(),
-                  Expanded(child: FoodBody()),
-                ],
-              ),
-            ),
-            model.selected != null
-                ? RightPanel(
-                    data: model.selected,
-                    model: model,
-                  )
-                : SizedBox.shrink()
+            useSingleColumn && model.showRightPanel
+                ? SizedBox.shrink()
+                : Expanded(
+                    child: Column(
+                      children: [
+                        FoodHeader(),
+                        Expanded(child: FoodBody()),
+                      ],
+                    ),
+                  ),
+            RightPanel(
+              data: model.selected,
+              model: model,
+            )
           ],
         ),
       ),
@@ -91,13 +94,13 @@ class RightPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data.name,
+                            data?.name ?? "",
                             style: TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
                           VSpace(5),
                           Text(
-                            data.description ?? '',
+                            data?.description ?? '',
                             style: TextStyle(
                               fontSize: 16.0,
                             ),
@@ -134,9 +137,8 @@ class FoodHeader extends StatelessWidget {
       child: Row(
         children: [
           Spacer(),
-          ClipRRect(
-            child: Container(
-              width: 300,
+          Flexible(
+            child: ClipRRect(
               child: TextField(
                 decoration: InputDecoration(
                   filled: true,
@@ -147,8 +149,8 @@ class FoodHeader extends StatelessWidget {
                   fillColor: Color(0xffF8F8F7),
                 ),
               ),
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            borderRadius: BorderRadius.circular(15.0),
           ),
           // Align(
           //     alignment: Alignment.centerLeft,
